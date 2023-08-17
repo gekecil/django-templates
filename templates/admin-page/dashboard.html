@@ -1,0 +1,44 @@
+{% extends './body.html' %}
+{% load static project_filters %}
+{% block base %}
+    <base href="{{ request.scheme|add:'://'|add:request.get_host|safe }}">
+{% endblock %}
+{% block title %}
+    <title>{{ title }} - {{ site.name }}</title>
+{% endblock %}
+{% block canonical %}
+    <link rel="canonical" href="{{ request.path|safe }}">
+{% endblock %}
+{% block nav %}
+{% include 'admin-page/navigation.html' %}
+{% endblock %}
+{% block content %}
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      <div class="container">
+        <div class="row my-3">
+          <div class="col-8">
+            <h4>{{ title }}</h4>
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="row">
+          <div class="col-auto">
+            <button type="button" class="btn btn-lg btn-info">
+              Users <span class="badge text-bg-secondary">{{ users.count }}</span>
+            </button>
+          </div>
+          <div class="col-auto">
+            <button type="button" class="btn btn-lg btn-info">
+              Segmentation <span class="badge text-bg-secondary">{{ segmentations.count }}</span>
+            </button>
+          </div>
+          <div class="col-auto">
+            <button type="button" class="btn btn-lg btn-info">
+              Position <span class="badge text-bg-secondary">{{ positions.count }}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+{% endblock %}

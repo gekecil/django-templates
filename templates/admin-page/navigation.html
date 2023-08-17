@@ -1,0 +1,62 @@
+{% load static project_filters %}
+          <ul class="nav flex-column">
+{% for item in prefix_urls|filter_location:'root' %}
+{% if request.path == item.url %}
+            <li class="nav-item mb-3">
+              <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="{{ request.path }}#">
+                <i class="{{ item.icon_class }} me-1"></i>
+                {{ item.title }}
+              </a>
+            </li>
+{% else %}
+            <li class="nav-item mb-3">
+              <a class="nav-link d-flex align-items-center gap-2" href="{{ item.url }}">
+                <i class="{{ item.icon_class }} me-1"></i>
+                {{ item.title }}
+              </a>
+            </li>
+{% endif %}
+{% endfor %}
+{% for prefix_url in prefix_urls|exclude_location:'root' %}
+{% if prefix_urls|exclude_location:'root'|filter_location:prefix_url.location|slice_from_zero:forloop.counter0 %}
+            <li class="nav-item mb-3">
+              <a class="nav-link" href="{{ request.path }}#">
+                {{ prefix_url.location|title }}
+              </a>
+              <ul class="nav list-unstyled ms-3">
+{% for location in prefix_urls|filter_location:prefix_url.location %}
+{% if request.path == location.url %}
+                <li class="nav-item">
+                  <a href="{{ request.path }}#" class="nav-link active" aria-current="page">
+                    <i class="{{ location.icon_class }} me-1"></i>
+                    {{ location.title }}
+                  </a>
+                </li>
+{% else %}
+                <li class="nav-item">
+                  <a href="{{ location.url }}" class="nav-link">
+                    <i class="{{ location.icon_class }} me-1"></i>
+                    {{ location.title }}
+                  </a>
+                </li>
+{% endif %}
+{% endfor %}
+              </ul>
+            </li>
+{% elif prefix_urls|exclude_location:'root'|filter_location:prefix_url.location|length == 1 %}
+            <li class="nav-item mb-3">
+              <a class="nav-link" href="{{ request.path }}#">
+                {{ prefix_url.location|title }}
+              </a>
+              <ul class="nav list-unstyled ms-3">
+                <li class="nav-item">
+                  <a href="{{ prefix_url.url }}" class="nav-link">
+                    <i class="{{ prefix_url.icon_class }} me-1"></i>
+                    {{ prefix_url.title }}
+                  </a>
+                </li>
+              </ul>
+            </li>
+{% endif %}
+{% endfor %}
+          </ul>

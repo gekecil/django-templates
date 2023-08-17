@@ -1,0 +1,8 @@
+{% extends './../head.html' %}
+{% block body %}
+{% load static %}
+  <body class="d-flex align-items-center py-4 bg-body-tertiary">
+    {% block content %}{% endblock %}
+    <script src="{% static 'js/bootstrap-5.3.1/bootstrap.bundle.min.js' %}"></script>
+  </body>
+{% endblock %}

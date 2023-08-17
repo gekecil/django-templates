@@ -1,0 +1,38 @@
+{% extends './../head.html' %}
+{% load static project_filters %}
+{% block body %}
+  <body>
+    <header class="sticky-top bg-dark p-0 shadow">
+      <div class="container-fluid">
+        <div class="row align-items-center">
+          <div class="col-8 navbar">
+            <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 py-0 fs-5 text-white fw-bold" href="/{{ app.namespace|safe }}">{{ request.site.name }}</a>
+          </div>
+          <div class="col-4 text-end">
+            <button class="btn fs-6 text-white" type="button" data-bs-toggle="dropdown">
+              <i class="bi bi-at"></i>{{ request.user.username }}
+              <i class="bi bi-person-circle ms-1"></i>
+            </button>
+            <ul class="dropdown-menu">
+              <li>
+                <a class="dropdown-item d-flex" href="{% url 'sign_out' %}?next={{ request.path|safe }}">
+                  <i class="bi bi-door-closed me-1"></i>
+                  Sign out
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </header>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="sidebar border border-right col-md-3 col-lg-2 p-0 min-vh-100 bg-body-tertiary">
+          {% block nav %}{% endblock %}
+        </div>
+        {% block content %}{% endblock %}
+      </div>
+    </div>
+    <script src="{% static 'js/bootstrap-5.3.1/bootstrap.bundle.min.js' %}"></script>
+  </body>
+{% endblock %}

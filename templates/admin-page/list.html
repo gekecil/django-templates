@@ -1,0 +1,71 @@
+{% extends './body.html' %}
+{% load static project_filters %}
+{% block base %}
+    <base href="{{ request.scheme|add:'://'|add:request.get_host|safe }}">
+{% endblock %}
+{% block title %}
+    <title>{{ title }} - {{ site.name }}</title>
+{% endblock %}
+{% block canonical %}
+    <link rel="canonical" href="{{ request.path|safe }}">
+{% endblock %}
+{% block nav %}
+{% include 'admin-page/navigation.html' %}
+{% endblock %}
+{% block content %}
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      <div class="container">
+        <div class="row my-3">
+          <div class="col-6">
+            <h4>{{ title }}</h4>
+          </div>
+          <div class="col-6 text-end">
+{% for button in buttons %}
+            <a class="btn btn-primary" href="{{ button.path }}" role="button">{{ button.name }}</a>
+{% endfor %}
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="row">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+{% for item in columns %}
+{% if forloop.first %}
+                <th scope="col">#</th>
+{% endif %}
+                <th scope="col">{{ item.column_name }}</th>
+{% endfor %}
+              </tr>
+            </thead>
+            <tbody>
+{% for object in object_list %}
+              <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+{% for column in columns %}
+                <td>
+{% if object|getattr:column.attribute_name|is_query_set %}
+{% for sub_object in object|getattr:column.attribute_name %}
+                {{ sub_object|getattr:column.sub_attribute_name }}
+                <br />
+{% endfor %}
+{% else %}
+{% if column.link is None %}
+                {{ object|getattr:column.attribute_name }}
+{% else %}
+                <a href="{{ request.path }}/{{ object.id }}/{{ column.link }}" class="line-primary text-decoration-none">
+                  {{ object|getattr:column.attribute_name }}
+                </a>
+{% endif %}
+{% endif %}
+                </td>
+{% endfor %}
+              </tr>
+{% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+{% endblock %}

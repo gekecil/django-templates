@@ -1,0 +1,42 @@
+{% extends './body.html' %}
+{% load static project_filters %}
+{% block base %}
+    <base href="{{ request.scheme|add:'://'|add:request.get_host|safe }}">
+{% endblock %}
+{% block title %}
+    <title>{{ title }} - {{ site.name }}</title>
+{% endblock %}
+{% block canonical %}
+    <link rel="canonical" href="{{ request.path|safe }}">
+{% endblock %}
+{% block nav %}
+{% include 'admin-page/navigation.html' %}
+{% endblock %}
+{% block content %}
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      <div class="container">
+        <div class="row my-3">
+          <div class="col-8">
+            <h4>{{ title }}</h4>
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="row">
+          <div class="col col-lg-6">
+            <form action="{{ request.path }}" method="post">{% csrf_token %}
+{% for field in form %}
+              <div class="mb-2">
+                <label for="{{ field.name }}" class="form-label">{{ field.label }}</label>
+                <input type="{{ field.widget_type }}" name="{{ field.name }}" class="form-control">
+              </div>
+{% endfor %}
+              <div class="mt-4">
+                <button type="submit" class="btn btn-primary ">Save</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </main>
+{% endblock %}
