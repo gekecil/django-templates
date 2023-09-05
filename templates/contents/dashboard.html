@@ -1,0 +1,47 @@
+{% extends './../base.html' %}
+{% load static project_filters %}
+{% block body %}
+  <body class="container-xxl p-0">
+{% include './../components/header.html' %}
+{% include './../components/sidebar.html' %}
+    <main class="d-inline-block">
+      <div class="container">
+        <div class="row my-4">
+          <div class="col">
+            <h4>{{ title }}</h4>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <canvas id="dashboard-line-chart"></canvas>
+          </div>
+        </div>
+      </div>
+    </main>
+{% include './../components/footer.html' %}
+    <script src="{% static 'js/bootstrap-5.3.1/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/chart.js-4.4.0/chart.umd.min.js' %}"></script>
+    <script>
+      const ctx = document.getElementById('dashboard-line-chart');
+
+{% if line_chart %}
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          datasets: {{ line_chart.datasets|safe }}
+        },
+        options: {
+          scales: {
+            y: {
+              ticks: {
+                stepSize: 1
+              }
+            }
+          }
+        }
+      })
+
+{% endif %}
+    </script>
+  </body>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% load static %}
+    <header class="sticky-top p-0 shadow">
+      <div class="px-3 py-2 text-bg-dark border-bottom">
+        <div class="container-fluid">
+          <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="/" class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none">
+              <img src="{% static 'bootstrap-logo.svg' %}" alt="{{ site.name }}" height="26" />
+              <h4 class="mx-2">{{ site.name }}</h4>
+            </a>
+{% if request and request.user %}
+            <button class="d-none d-lg-inline-block btn fs-6 text-white" type="button" data-bs-toggle="dropdown">
+              <i class="bi bi-at"></i>{{ request.user.username }}
+              <i class="bi bi-person-circle ms-1"></i>
+            </button>
+            <ul class="dropdown-menu">
+              <li>
+                <a class="dropdown-item d-flex" href="{% url 'sign_out' %}?next={{ request.path|safe }}">
+                  <i class="bi bi-door-closed me-1"></i>
+                  Sign out
+                </a>
+              </li>
+            </ul>
+{% endif %}
+          </div>
+        </div>
+      </div>
+    </header>

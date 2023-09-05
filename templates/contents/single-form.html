@@ -1,0 +1,43 @@
+{% extends './../base.html' %}
+{% load static project_filters %}
+{% block body %}
+  <body class="container-xxl p-0">
+{% include './../components/header.html' %}
+{% include './../components/sidebar.html' %}
+    <main class="d-inline-block">
+      <div class="container">
+        <div class="row my-4">
+          <div class="col">
+            <h4>{{ title }}</h4>
+          </div>
+        </div>
+{% if can_delete %}
+        <div class="row mb-3">
+          <div class="col-8 col-md-6 text-end">
+            <a class="btn btn-danger" href="{% url app.app_name|add:':delete-stock-exchange' pk=object.id %}" role="button">Delete</a>
+          </div>
+        </div>
+{% endif %}
+        <div class="row mb-3">
+          <div class="col-8 col-md-6">
+            <form action="{{ request.path }}" method="post">{% csrf_token %}
+{% for field in form %}
+              <div class="mb-3">
+{% if field.is_hidden != True %}
+                <label for="{{ field.name }}" class="form-label">{{ field.label }}</label>
+{% endif %}
+                {{ field }}
+              </div>
+{% endfor %}
+              <div class="mt-4">
+                <button type="submit" class="btn btn-primary ">Submit</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </main>
+{% include './../components/footer.html' %}
+    <script src="{% static 'js/bootstrap-5.3.1/bootstrap.bundle.min.js' %}"></script>
+  </body>
+{% endblock %}

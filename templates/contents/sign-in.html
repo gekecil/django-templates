@@ -1,0 +1,32 @@
+{% extends './../base.html' %}
+{% load static project_filters %}
+{% block body %}
+  <body class="bg-body-tertiary sign-in">
+    <header class="mt-3 mb-4 text-center">
+      <img src="{% static 'bootstrap-logo.svg' %}" alt="{{ site.name }}" width="72" height="57" />
+    </header>
+    <main class="bg-body py-3">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <h4>Please sign in</h4>
+        </div>
+        <div class="row">
+{% if next|url_id is not None %}
+          <form action="{% url 'sign_in' %}?next={% url next|full_url_name next|url_id %}" method="post">
+{% else %}
+          <form action="{% url 'sign_in' %}?next={% url next|full_url_name %}" method="post">
+{% endif %}
+        {% csrf_token %}
+{% for field in form.fields %}
+            <input type="{{ form|get_list:field|get_attribute:'field'|get_attribute:'widget'|get_attribute:'input_type' }}" name="{{ field }}" class="form-control mb-2" placeholder="{{ form|get_list:field|get_attribute:'label' }}">
+{% endfor %}
+            <button class="btn btn-primary w-100 my-4" type="submit">Sign in</button>
+          </form>
+        </div>
+      </div>
+    </main>
+    <footer>
+      <p class="m-0 p-3 pt-2 bg-body text-body-secondary">&copy; 2023</p>
+    </footer>
+  </body>
+{% endblock %}

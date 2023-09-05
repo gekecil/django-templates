@@ -1,0 +1,77 @@
+{% extends './../base.html' %}
+{% load static project_filters %}
+{% block body %}
+  <body>
+{% include './../components/header.html' %}
+{% include './../components/sidebar.html' %}
+    <main class="d-inline-block">
+      <div class="container">
+        <div class="row my-4">
+          <div class="col">
+            <h4>{{ title }}</h4>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col text-end">
+{% for button in buttons %}
+            <a class="btn btn-primary" href="{{ button.path }}" role="button">{{ button.name }}</a>
+{% endfor %}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th class="text-center" scope="col">#</th>
+{% for field in fields %}
+                  <th class="text-center" scope="col">
+{% with field|add:'__verbose_name' as column_name_attribute %}
+{% if object_list|has_attribute:column_name_attribute %}
+                    {{ object_list|get_attribute:column_name_attribute|title }}
+{% else %}
+                    {{ object_list.model|get_field_verbose_name:field|title }}
+{% endif %}
+{% endwith %}
+                  </th>
+{% endfor %}
+                </tr>
+              </thead>
+              <tbody>
+{% for object in object_list %}
+                <tr>
+                  <th class="text-center" scope="row">{{ forloop.counter }}</th>
+{% for field in fields %}
+                  <td>
+{% if object|get_attribute:field|is_query_set %}
+{% for sub_object in object|get_attribute:field %}
+                    {{ sub_object }}
+                    <br />
+{% endfor %}
+{% else %}
+{% if forloop.first and object.get_absolute_url is not None %}
+                    <a href="{{ object.get_absolute_url }}" class="line-primary text-decoration-none">
+                      {{ object|get_attribute:field }}
+                    </a>
+{% else %}
+                    {{ object|get_attribute:field }}
+{% endif %}
+{% endif %}
+                  </td>
+{% endfor %}
+                </tr>
+{% empty %}
+                <tr>
+                  <th class="text-center" scope="row" colspan="{{ fields|length|add:1 }}">No data</th>
+                </tr>
+{% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+{% include './../components/footer.html' %}
+    <script src="{% static 'js/bootstrap-5.3.1/bootstrap.bundle.min.js' %}"></script>
+  </body>
+{% endblock %}

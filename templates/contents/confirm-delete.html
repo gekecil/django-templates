@@ -1,0 +1,31 @@
+{% extends './../base.html' %}
+{% load static project_filters %}
+{% block body %}
+  <body class="container-xxl p-0">
+{% include './../components/header.html' %}
+{% include './../components/sidebar.html' %}
+    <main class="d-inline-block">
+      <div class="container">
+        <div class="row my-4">
+          <div class="col">
+            <h4>{{ title }}</h4>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <form action="{{ request.path }}" method="post">{% csrf_token %}
+              <div class="mb-3">
+                <p>Are you sure you want to delete &quot;{{ object.stock }}&quot;?</p>
+              </div>
+              <div class="mt-4">
+                <button type="submit" class="btn btn-primary ">Submit</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </main>
+{% include './../components/footer.html' %}
+    <script src="{% static 'js/bootstrap-5.3.1/bootstrap.bundle.min.js' %}"></script>
+  </body>
+{% endblock %}

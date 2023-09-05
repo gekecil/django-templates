@@ -1,0 +1,66 @@
+{% load static project_tags %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <base href="{% scheme %}{{ '://'|add:site.domain|safe }}">
+{% if title %}
+    <title>{{ title|add:' - '|add:site.name }}</title>
+{% else %}
+    <title>{{ site.name }}</title>
+{% endif %}
+{% if canonical %}
+    <link rel="canonical" href="{{ canonical }}">
+{% endif %}
+    <link href="{% static 'css/bootstrap-5.3.1/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/bootstrap-icons-1.10.5/font/bootstrap-icons.css' %}" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+    <style>
+      :root {
+        --aside-width: 280px;
+        --aside-child-width: 260px;
+      }
+
+      .bi {
+        vertical-align: -.125em;
+        fill: currentColor;
+      }
+
+      .sign-in {
+        border: 1px solid #e8e8e8;
+        border-radius: 4px;
+        overflow: hidden;
+        width: 28em;
+        min-width: 300px;
+        margin: 100px auto;
+        height: auto;
+      }
+
+      aside {
+        width: var(--aside-width);
+        display: inline-block;
+        vertical-align: top;
+        position: relative;
+      }
+
+      aside > * {
+        width: var(--aside-child-width);
+      }
+
+      main.d-inline-block {
+        width: calc(100% - var(--aside-width) - 24px);
+      }
+
+      footer > * {
+        width: var(--aside-child-width);
+      }
+
+      form div:has([id*=_set-]:not([id*=_set-0])) label {
+        display: none;
+      }
+
+    </style>
+  </head>
+  {% block body %}{% endblock %}
+</html>

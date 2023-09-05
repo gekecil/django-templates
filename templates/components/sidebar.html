@@ -1,0 +1,23 @@
+    <aside>
+      <div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary position-fixed h-100">
+        <ul class="nav nav-pills flex-column mb-auto">
+{% for nav_link in nav_links %}
+{% if nav_link.path == request.path %}
+          <li class="nav-item">
+            <a href="{{ request.path|safe }}#" class="nav-link active" aria-current="page">
+              <i class="{{ nav_link.icon_class }} me-2"></i>
+              {{ nav_link.title }}
+            </a>
+          </li>
+{% else %}
+          <li>
+            <a href="{{ nav_link.path }}" class="nav-link link-body-emphasis">
+              <i class="{{ nav_link.icon_class }} me-2"></i>
+              {{ nav_link.title }}
+            </a>
+          </li>
+{% endif %}
+{% endfor %}
+        </ul>
+      </div>
+    </aside>
