@@ -1,18 +1,15 @@
-{% load static project_tags %}
-<!doctype html>
+{% load static %}<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <base href="{% scheme %}{{ '://'|add:site.domain|safe }}">
-{% if title %}
-    <title>{{ title|add:' - '|add:site.name }}</title>
-{% else %}
-    <title>{{ site.name }}</title>
-{% endif %}
-{% if canonical %}
+    <base href="{% block base_url %}{% endblock %}">
+    <title>{% block title %}{% endblock %}</title>
+{% block canonical %}
+{% if canonical is not None %}
     <link rel="canonical" href="{{ canonical }}">
 {% endif %}
+{% endblock %}
     <link href="{% static 'css/bootstrap-5.3.1/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/bootstrap-icons-1.10.5/font/bootstrap-icons.css' %}" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
@@ -62,5 +59,5 @@
 
     </style>
   </head>
-  {% block body %}{% endblock %}
+{% block body %}{% endblock %}
 </html>

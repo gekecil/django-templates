@@ -1,8 +1,11 @@
 {% extends './../base.html' %}
 {% load static project_filters %}
+{% block base_url %}{{ request.scheme|add:'://'|add:request.site.domain|safe }}{% endblock %}
+{% block title %}{{ title|add:' - '|add:request.site.name }}{% endblock %}
+{% block canonical %}{% with request.path as canonical %}{{ block.super }}{% endwith %}{% endblock %}
 {% block body %}
   <body class="container-xxl p-0">
-{% include './../components/header.html' %}
+{% include './../components/header.html' with site=request.site %}
 {% include './../components/sidebar.html' %}
     <main class="d-inline-block">
       <div class="container">
@@ -18,7 +21,7 @@
         </div>
       </div>
     </main>
-{% include './../components/footer.html' %}
+{% include './../components/footer.html' with site=request.site %}
     <script src="{% static 'js/bootstrap-5.3.1/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'js/chart.js-4.4.0/chart.umd.min.js' %}"></script>
     <script>

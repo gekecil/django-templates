@@ -1,0 +1,57 @@
+{% extends './../base.html' %}
+{% load static project_filters %}
+{% block base_url %}{{ request.scheme|add:'://'|add:request.site.domain|safe }}{% endblock %}
+{% block title %}{{ title|add:' - '|add:request.site.name }}{% endblock %}
+{% block body %}
+  <body class="container-xxl p-0">
+{% include './../components/header.html' with site=request.site %}
+{% include './../components/sidebar.html' %}
+    <main class="d-inline-block">
+      <div class="container">
+        <div class="row my-4">
+          <div class="col">
+            <h4>{{ title }}</h4>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col text-end">
+{% for button in buttons %}
+            <a class="btn btn-{{ button.color }} ms-1" href="{{ button.url }}" role="button">{{ button.name|title }}</a>
+{% endfor %}
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col">
+{% for field in fields %}
+            <div class="row">
+              <div class="col-4">
+{% with field|add:'__verbose_name' as column_name_attribute %}
+{% if object|get_attribute:column_name_attribute is not None %}
+                <h6>{{ object|get_attribute:column_name_attribute|title }}</h6>
+{% else %}
+                <h6>{{ object|get_field_verbose_name:field|title }}</h6>
+{% endif %}
+{% endwith %}
+              </div>
+              <div class="col-8">
+{% if object|get_attribute:field|get_type == 'QuerySet' %}
+                <p class="fw-normal">
+{% for sub_object in object|get_attribute:field %}
+                    {{ sub_object }}
+                    <br />
+{% endfor %}
+                </p>
+{% else %}
+                <p class="fw-normal">{{ object|get_attribute:field }}</p>
+{% endif %}
+              </div>
+            </div>
+            <hr />
+{% endfor %}
+        </div>
+      </div>
+    </main>
+{% include './../components/footer.html' with site=request.site %}
+    <script src="{% static 'js/bootstrap-5.3.1/bootstrap.bundle.min.js' %}"></script>
+  </body>
+{% endblock %}

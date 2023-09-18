@@ -1,8 +1,10 @@
 {% extends './../base.html' %}
 {% load static project_filters %}
+{% block base_url %}{{ request.scheme|add:'://'|add:request.site.domain|safe }}{% endblock %}
+{% block title %}{{ title|add:' - '|add:request.site.name }}{% endblock %}
 {% block body %}
   <body class="container-xxl p-0">
-{% include './../components/header.html' %}
+{% include './../components/header.html' with site=request.site %}
 {% include './../components/sidebar.html' %}
     <main class="d-inline-block">
       <div class="container">
@@ -15,7 +17,7 @@
           <div class="col">
             <form action="{{ request.path }}" method="post">{% csrf_token %}
               <div class="mb-3">
-                <p>Are you sure you want to delete &quot;{{ object.stock }}&quot;?</p>
+                <p>Are you sure you want to delete &quot;{{ object }}&quot;?</p>
               </div>
               <div class="mt-4">
                 <button type="submit" class="btn btn-primary ">Submit</button>
@@ -25,7 +27,7 @@
         </div>
       </div>
     </main>
-{% include './../components/footer.html' %}
+{% include './../components/footer.html' with site=request.site %}
     <script src="{% static 'js/bootstrap-5.3.1/bootstrap.bundle.min.js' %}"></script>
   </body>
 {% endblock %}
